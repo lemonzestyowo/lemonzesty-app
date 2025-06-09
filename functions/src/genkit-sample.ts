@@ -4,22 +4,21 @@
  * using Vertex AI.
  */
 import {
-  configure, // Directly import configure (function)
-  defineFlow, // Directly import defineFlow (function)
-  customFlow, // Directly import customFlow (function)
-  generateText, // Directly import generateText (function)
-  context, // Directly import context (function/object)
-  genkit, // genkit itself might be an object/namespace with plugins
-  AuthPolicy, // Directly import AuthPolicy (type/enum)
-  StreamingCallback, // Directly import StreamingCallback (type)
-} from "genkit"; // Import core functions and types from the main "genkit" package
+  configure,
+  defineFlow,
+  customFlow,
+  generateText,
+  context,
+  genkit,
+  AuthPolicy,
+  StreamingCallback,
+} from "genkit";
 
-import {firebaseAuth} from "genkit/firebase"; // Correct sub-package import for firebaseAuth
-import {vertexAI, TextPart} from "genkit/vertexai"; // Correct sub-package import for vertexAI and TextPart
-
+import {firebaseAuth} from "genkit/firebase";
+import {vertexAI, TextPart} from "genkit/vertexai";
 import * as z from "zod";
 
-configure({ // Use configure function directly
+configure({
   plugins: [
     firebaseAuth(),
     vertexAI({
@@ -31,7 +30,7 @@ configure({ // Use configure function directly
   flowStateStore: "firebase",
 });
 
-export const summarize = customFlow( // Use customFlow function directly
+export const summarize = customFlow(
   {
     name: "summarize",
     inputSchema: z.string(),
@@ -43,8 +42,8 @@ export const summarize = customFlow( // Use customFlow function directly
     auth: z.infer<typeof AuthPolicy>,
     streamingCallback: StreamingCallback<TextPart>,
   ) => {
-    context().set("subject", subject); // Use context function directly
-    const llmResponse = await generateText( // Use generateText function directly
+    context().set("subject", subject);
+    const llmResponse = await generateText(
       {
         model: "vertexAI/gemini-pro",
         prompt: `You are a summarization bot. Summarize the following in
@@ -61,7 +60,7 @@ export const summarize = customFlow( // Use customFlow function directly
   },
 );
 
-export const storyGen = defineFlow( // Use defineFlow function directly
+export const storyGen = defineFlow(
   {
     name: "storyGen",
     inputSchema: z.object({
@@ -73,7 +72,7 @@ export const storyGen = defineFlow( // Use defineFlow function directly
   },
   async ({topic, length}: {topic: string; length: number}) => {
     const prompt = `Write a ${length} word story about ${topic}.`;
-    const llmResponse = await generateText({ // Use generateText function directly
+    const llmResponse = await generateText({
       model: "vertexAI/gemini-pro",
       prompt: prompt,
       config: {
