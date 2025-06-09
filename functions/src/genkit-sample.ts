@@ -4,25 +4,24 @@
  * using Vertex AI.
  */
 import {
-  configureGenkit, // Imported directly
-  defineFlow, // Imported directly
-  customFlow, // Imported directly
-  generateText, // Imported directly
-  genkit, // Imported directly
-  StreamingCallback, // Imported directly
-} from "@genkit-ai/core"; // Reverted to older @genkit-ai/core import
+  configure, // Directly import configure (function)
+  defineFlow, // Directly import defineFlow (function)
+  customFlow, // Directly import customFlow (function)
+  generateText, // Directly import generateText (function)
+  context, // Directly import context (function/object)
+  genkit, // genkit itself might be an object/namespace with plugins
+  AuthPolicy, // Directly import AuthPolicy (type/enum)
+  StreamingCallback, // Directly import StreamingCallback (type)
+} from "genkit"; // Import core functions and types from the main "genkit" package
 
-import {firebaseAuth, firebase} from "@genkit-ai/firebase"; // Reverted to older @genkit-ai/firebase import
-import {
-  vertexAI,
-  TextPart,
-} from "@genkit-ai/vertexai"; // Reverted to older @genkit-ai/vertexai import
+import {firebaseAuth} from "genkit/firebase"; // Correct sub-package import for firebaseAuth
+import {vertexAI, TextPart} from "genkit/vertexai"; // Correct sub-package import for vertexAI and TextPart
+
 import * as z from "zod";
 
-configureGenkit({ // Use configureGenkit (older name)
+configure({ // Use configure function directly
   plugins: [
     firebaseAuth(),
-    firebase(), // 'firebase' plugin might be expected with older versions
     vertexAI({
       location: "us-central1",
       model: "gemini-pro",
@@ -32,7 +31,7 @@ configureGenkit({ // Use configureGenkit (older name)
   flowStateStore: "firebase",
 });
 
-export const summarize = customFlow( // Use customFlow directly
+export const summarize = customFlow( // Use customFlow function directly
   {
     name: "summarize",
     inputSchema: z.string(),
@@ -41,11 +40,11 @@ export const summarize = customFlow( // Use customFlow directly
   },
   async (
     subject: string,
-    auth: z.infer<typeof firebaseAuth.AuthPolicy>,
+    auth: z.infer<typeof AuthPolicy>,
     streamingCallback: StreamingCallback<TextPart>,
   ) => {
-    genkit.context().set("subject", subject); // Use genkit.context()
-    const llmResponse = await generateText( // Use generateText directly
+    context().set("subject", subject); // Use context function directly
+    const llmResponse = await generateText( // Use generateText function directly
       {
         model: "vertexAI/gemini-pro",
         prompt: `You are a summarization bot. Summarize the following in
@@ -62,7 +61,7 @@ export const summarize = customFlow( // Use customFlow directly
   },
 );
 
-export const storyGen = defineFlow( // Use defineFlow directly
+export const storyGen = defineFlow( // Use defineFlow function directly
   {
     name: "storyGen",
     inputSchema: z.object({
@@ -74,7 +73,7 @@ export const storyGen = defineFlow( // Use defineFlow directly
   },
   async ({topic, length}: {topic: string; length: number}) => {
     const prompt = `Write a ${length} word story about ${topic}.`;
-    const llmResponse = await generateText({
+    const llmResponse = await generateText({ // Use generateText function directly
       model: "vertexAI/gemini-pro",
       prompt: prompt,
       config: {
