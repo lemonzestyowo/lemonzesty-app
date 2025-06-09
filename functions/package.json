@@ -13,7 +13,7 @@
   },
   "name": "functions",
   "engines": {
-    "node": "18"  // CHANGED: Target Node.js 18 for Cloud Build compatibility
+    "node": "18"  // CRITICAL CHANGE: Target Node.js 18 for Cloud Build compatibility
   },
   "dependencies": {
     "express": "^5.1.0",
