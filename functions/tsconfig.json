@@ -13,7 +13,17 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "genkit": ["node_modules/genkit/lib/index.d.ts"]
+      "genkit": ["node_modules/genkit/lib/index.d.ts"],
+      "genkit/firebase": ["node_modules/genkit/firebase/lib/index.d.ts"],
+      "genkit/vertexai": ["node_modules/genkit/vertexai/lib/index.d.ts"],
+      "genkit/configure": ["node_modules/genkit/lib/configure.d.ts"],
+      "genkit/defineFlow": ["node_modules/genkit/lib/flow.d.ts"],
+      "genkit/customFlow": ["node_modules/genkit/lib/flow.d.ts"],
+      "genkit/generateText": ["node_modules/genkit/lib/generate.d.ts"],
+      "genkit/context": ["node_modules/genkit/lib/context.d.ts"],
+      "genkit/AuthPolicy": ["node_modules/genkit/lib/auth/auth.d.ts"],
+      "genkit/StreamingCallback": ["node_modules/genkit/lib/flow.d.ts"],
+      "genkit/TextPart": ["node_modules/genkit/lib/ai/model.d.ts"]
     }
   },
   "compileOnSave": true,
