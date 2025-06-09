@@ -4,24 +4,25 @@
  * using Vertex AI.
  */
 import {
-  configure, // Directly import configure
-  defineFlow, // Directly import defineFlow
-  customFlow, // Directly import customFlow
-  generateText, // Directly import generateText
-  context, // Directly import context
-  genkit, // Keep genkit for .context() and potentially .configure()
-  AuthPolicy, // Directly import AuthPolicy
-  StreamingCallback, // Directly import StreamingCallback
-} from "genkit"; // Import core functions and types from "genkit"
+  configureGenkit, // Imported directly
+  defineFlow, // Imported directly
+  customFlow, // Imported directly
+  generateText, // Imported directly
+  genkit, // Imported directly
+  StreamingCallback, // Imported directly
+} from "@genkit-ai/core"; // Reverted to older @genkit-ai/core import
 
-import {firebaseAuth} from "genkit/firebase"; // Correct sub-package import for firebaseAuth
-import {vertexAI, TextPart} from "genkit/vertexai"; // Correct sub-package import for vertexAI and TextPart
-
+import {firebaseAuth, firebase} from "@genkit-ai/firebase"; // Reverted to older @genkit-ai/firebase import
+import {
+  vertexAI,
+  TextPart,
+} from "@genkit-ai/vertexai"; // Reverted to older @genkit-ai/vertexai import
 import * as z from "zod";
 
-configure({ // Use configure directly
+configureGenkit({ // Use configureGenkit (older name)
   plugins: [
     firebaseAuth(),
+    firebase(), // 'firebase' plugin might be expected with older versions
     vertexAI({
       location: "us-central1",
       model: "gemini-pro",
@@ -40,10 +41,10 @@ export const summarize = customFlow( // Use customFlow directly
   },
   async (
     subject: string,
-    auth: z.infer<typeof AuthPolicy>,
+    auth: z.infer<typeof firebaseAuth.AuthPolicy>,
     streamingCallback: StreamingCallback<TextPart>,
   ) => {
-    context().set("subject", subject); // Use context directly
+    genkit.context().set("subject", subject); // Use genkit.context()
     const llmResponse = await generateText( // Use generateText directly
       {
         model: "vertexAI/gemini-pro",
@@ -73,7 +74,7 @@ export const storyGen = defineFlow( // Use defineFlow directly
   },
   async ({topic, length}: {topic: string; length: number}) => {
     const prompt = `Write a ${length} word story about ${topic}.`;
-    const llmResponse = await generateText({ // Use generateText directly
+    const llmResponse = await generateText({
       model: "vertexAI/gemini-pro",
       prompt: prompt,
       config: {
