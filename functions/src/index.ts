@@ -8,26 +8,12 @@
  */
 
 import {onRequest} from "firebase-functions/v2/https";
-// import *s logger from 'firebase-functions/logger'; // Removed as unused
+import * as logger from "firebase-functions/logger";
 
-// The 'onRequest' function was marked as unused in your previous linting output
-// To make it a functional HTTP Cloud Function, you need to export it.
-// This example exports it as 'helloWorld'.
-const helloWorldFunction = onRequest(
-  (
-    request,
-    response,
-  ) => {
-    // logger.info('Hello logs!', {structuredData: true}); // Removed as unused
-    response.send("Hello from Firebase!");
-  },
-);
+// Start writing functions
+// https://firebase.google.com/docs/functions/typescript
 
-export {
-  helloWorldFunction as helloWorld,
-};
-
-// You can import and use other Genkit flows here if needed
-// import { myFlow } from './genkit-sample';
-// exports.myFlow = myFlow;
-
+// export const helloWorld = onRequest((request, response) => {
+//   logger.info("Hello logs!", {structuredData: true});
+//   response.send("Hello from Firebase!");
+// });

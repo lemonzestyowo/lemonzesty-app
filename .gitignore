@@ -1,53 +1,30 @@
-
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# Dependencies
-/node_modules
-/.pnp
-.pnp.js
-.yarn/install-state.gz
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
-
-# Next.js build output
-/.next
-/out
-
-# Firebase
-/.firebase
-firebase-debug.log
-database-debug.log
-hosting-debug.log
-
-# Local Environment Variables
+# Node.js
+node_modules/
 .env
-.env*.local
-.env.development.local
-.env.test.local
-.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp/
+.pnp.js
+.npm/
+.eslintcache
+.prettiercache
 
-# Test results
-/coverage
+# Firebase-specific exclusions
+firebase-debug.log
+*.local
 
-# IDE / Editor specific
-.vscode/
-.idea/
-*.sublime-workspace
-*.sublime-project
+# Cloud Functions compiled output (your request)
+functions/lib/
 
 # macOS
 .DS_Store
 
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
+# VS Code
+.vscode/
 
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
+# IDE-specific files (e.g., WebStorm, IntelliJ)
+.idea/
+*.iml
+*.ipr
+*.iws
