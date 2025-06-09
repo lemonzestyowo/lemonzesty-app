@@ -1,36 +1,31 @@
 {
-  "main": "lib/index.js",
-  "scripts": {
-    "genkit:start": "genkit start -- tsx --watch src/genkit-sample.ts",
-    "lint": "eslint --ext .js,.ts .",
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "serve": "npm run build && firebase emulators:start --only functions",
-    "shell": "npm run build && firebase functions:shell",
-    "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2017",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "genkit/lib/configure": ["node_modules/genkit/lib/configure.d.ts"],
+      "genkit/lib/flow": ["node_modules/genkit/lib/flow.d.ts"],
+      "genkit/lib/generate": ["node_modules/genkit/lib/generate.d.ts"],
+      "genkit/lib/context": ["node_modules/genkit/lib/context.d.ts"],
+      "genkit/lib/genkit": ["node_modules/genkit/lib/genkit.d.ts"],
+      "genkit/lib/auth/auth": ["node_modules/genkit/lib/auth/auth.d.ts"],
+      "genkit/lib/ai/model": ["node_modules/genkit/lib/ai/model.d.ts"],
+      "genkit/firebase/lib/index": ["node_modules/genkit/firebase/lib/index.d.ts"],
+      "genkit/vertexai/lib/index": ["node_modules/genkit/vertexai/lib/index.d.ts"]
+    }
   },
-  "name": "functions",
-  "engines": {
-    "node": "18"  
-  },
-  "dependencies": {
-    "express": "^5.1.0",
-    "firebase-admin": "^12.6.0",
-    "firebase-functions": "^6.0.1",
-    "genkit": "^1.12.0",            
-    "zod": "^3.22.4"
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
-    "eslint": "^8.57.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-plugin-import": "^2.29.1",
-    "firebase-functions-test": "^3.1.0",
-    "tsx": "^4.19.4",
-    "typescript": "~5.1.0"
-  },
-  "private": true
+  "compileOnSave": true,
+  "include": [
+    "src"
+  ]
 }
