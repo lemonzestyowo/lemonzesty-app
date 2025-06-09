@@ -11,8 +11,6 @@ steps:
   - name: 'gcr.io/cloud-builders/firebase'
     args: ['deploy', '--only', 'functions', '--project', '${_PROJECT_ID}']
     dir: 'functions'
-options: # <--- Add this section
-  logging: CLOUD_LOGGING_ONLY # This tells Cloud Build to send logs to Cloud Logging
-                              # It satisfies the requirement when a service account is used.
-  # default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET # Alternative, but CLOUD_LOGGING_ONLY is often simpler
+options: # <--- This section needs to be added or updated
+  logging: CLOUD_LOGGING_ONLY # This directs logs to Cloud Logging
 timeout: '1600s' # Adjust timeout if deployment takes longer
