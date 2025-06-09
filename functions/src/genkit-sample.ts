@@ -4,25 +4,23 @@
  * using Vertex AI.
  */
 import {
-  configureGenkit,
+  configure,
   defineFlow,
   customFlow,
   generateText,
+  context,
   genkit,
+  AuthPolicy,
   StreamingCallback,
-} from "@genkit-ai/core";
+} from "genkit";
 
-import {firebaseAuth, firebase} from "@genkit-ai/firebase";
-import {
-  vertexAI,
-  TextPart,
-} from "@genkit-ai/vertexai";
+import {firebaseAuth} from "genkit/firebase";
+import {vertexAI, TextPart} from "genkit/vertexai";
 import * as z from "zod";
 
-configureGenkit({
+configure({
   plugins: [
     firebaseAuth(),
-    firebase(),
     vertexAI({
       location: "us-central1",
       model: "gemini-pro",
@@ -41,10 +39,10 @@ export const summarize = customFlow(
   },
   async (
     subject: string,
-    auth: z.infer<typeof firebaseAuth.AuthPolicy>,
+    auth: z.infer<typeof AuthPolicy>,
     streamingCallback: StreamingCallback<TextPart>,
   ) => {
-    genkit.context().set("subject", subject);
+    context().set("subject", subject);
     const llmResponse = await generateText(
       {
         model: "vertexAI/gemini-pro",
