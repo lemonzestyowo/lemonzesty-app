@@ -3,14 +3,26 @@
  * This file defines Genkit flows for summarization and story generation
  * using Vertex AI.
  */
-import * as genkit from "genkit";
+import {
+  configure,
+  defineFlow,
+  customFlow,
+  generateText,
+  context,
+  genkit,
+  AuthPolicy,
+  StreamingCallback,
+  TextPart,
+  firebaseAuth,
+  vertexAI,
+} from "genkit";
 
 import * as z from "zod";
 
-genkit.configure({
+configure({
   plugins: [
-    genkit.firebaseAuth(),
-    genkit.vertexAI({
+    firebaseAuth(),
+    vertexAI({
       location: "us-central1",
       model: "gemini-pro",
     }),
@@ -19,20 +31,20 @@ genkit.configure({
   flowStateStore: "firebase",
 });
 
-export const summarize = genkit.customFlow(
+export const summarize = customFlow(
   {
     name: "summarize",
     inputSchema: z.string(),
     outputSchema: z.string(),
-    authPolicy: genkit.firebaseAuth.allowAnyAuthedUser(),
+    authPolicy: firebaseAuth.allowAnyAuthedUser(),
   },
   async (
     subject: string,
-    auth: z.infer<typeof genkit.AuthPolicy>,
-    streamingCallback: genkit.StreamingCallback<genkit.TextPart>,
+    auth: z.infer<typeof AuthPolicy>,
+    streamingCallback: StreamingCallback<TextPart>,
   ) => {
-    genkit.context().set("subject", subject);
-    const llmResponse = await genkit.generateText(
+    context().set("subject", subject);
+    const llmResponse = await generateText(
       {
         model: "vertexAI/gemini-pro",
         prompt: `You are a summarization bot. Summarize the following in
@@ -49,7 +61,7 @@ export const summarize = genkit.customFlow(
   },
 );
 
-export const storyGen = genkit.defineFlow(
+export const storyGen = defineFlow(
   {
     name: "storyGen",
     inputSchema: z.object({
@@ -57,11 +69,11 @@ export const storyGen = genkit.defineFlow(
       length: z.number().describe("Number of words"),
     }),
     outputSchema: z.string(),
-    authPolicy: genkit.firebaseAuth.allowAnyAuthedUser(),
+    authPolicy: firebaseAuth.allowAnyAuthedUser(),
   },
   async ({topic, length}: {topic: string; length: number}) => {
     const prompt = `Write a ${length} word story about ${topic}.`;
-    const llmResponse = await genkit.generateText({
+    const llmResponse = await generateText({
       model: "vertexAI/gemini-pro",
       prompt: prompt,
       config: {
