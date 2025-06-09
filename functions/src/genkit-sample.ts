@@ -3,13 +3,22 @@
  * This file defines Genkit flows for summarization and story generation
  * using Vertex AI.
  */
-import * as genkit from "genkit";
+import {
+  configure,
+  defineFlow,
+  customFlow,
+  generateText,
+  context,
+  genkit,
+  AuthPolicy,
+  StreamingCallback,
+  firebaseAuth,
+  vertexAI,
+} from "genkit";
 
-import {firebaseAuth} from "genkit/firebase";
-import {vertexAI, TextPart} from "genkit/vertexai";
 import * as z from "zod";
 
-genkit.configure({
+configure({
   plugins: [
     firebaseAuth(),
     vertexAI({
@@ -21,7 +30,7 @@ genkit.configure({
   flowStateStore: "firebase",
 });
 
-export const summarize = genkit.customFlow(
+export const summarize = customFlow(
   {
     name: "summarize",
     inputSchema: z.string(),
@@ -30,11 +39,11 @@ export const summarize = genkit.customFlow(
   },
   async (
     subject: string,
-    auth: z.infer<typeof genkit.AuthPolicy>,
-    streamingCallback: genkit.StreamingCallback<TextPart>,
+    auth: z.infer<typeof AuthPolicy>,
+    streamingCallback: StreamingCallback<TextPart>,
   ) => {
-    genkit.context().set("subject", subject);
-    const llmResponse = await genkit.generateText(
+    context().set("subject", subject);
+    const llmResponse = await generateText(
       {
         model: "vertexAI/gemini-pro",
         prompt: `You are a summarization bot. Summarize the following in
@@ -51,7 +60,7 @@ export const summarize = genkit.customFlow(
   },
 );
 
-export const storyGen = genkit.defineFlow(
+export const storyGen = defineFlow(
   {
     name: "storyGen",
     inputSchema: z.object({
@@ -63,7 +72,7 @@ export const storyGen = genkit.defineFlow(
   },
   async ({topic, length}: {topic: string; length: number}) => {
     const prompt = `Write a ${length} word story about ${topic}.`;
-    const llmResponse = await genkit.generateText({
+    const llmResponse = await generateText({
       model: "vertexAI/gemini-pro",
       prompt: prompt,
       config: {
