@@ -13,8 +13,8 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "genkit": ["node_modules/genkit"],
-      "genkit/*": ["node_modules/genkit/*"]
+      "genkit": ["node_modules/genkit/lib/index.d.ts"],
+      "genkit/*": ["node_modules/genkit/*/index.d.ts"]
     }
   },
   "compileOnSave": true,
