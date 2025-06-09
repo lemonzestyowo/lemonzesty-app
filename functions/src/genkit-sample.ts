@@ -3,16 +3,19 @@
  * This file defines Genkit flows for summarization and story generation
  * using Vertex AI.
  */
-import { configure } from "genkit/lib/configure";
-import { defineFlow, customFlow, StreamingCallback } from "genkit/lib/flow";
-import { generateText } from "genkit/lib/generate";
-import { context } from "genkit/lib/context";
-import { genkit } from "genkit/lib/genkit";
-import { AuthPolicy } from "genkit/lib/auth/auth";
-import { TextPart } from "genkit/lib/ai/model";
-
-import { firebaseAuth } from "genkit/firebase/lib/index";
-import { vertexAI } from "genkit/vertexai/lib/index";
+import {
+  configure,
+  defineFlow,
+  customFlow,
+  generateText,
+  context,
+  genkit,
+  AuthPolicy,
+  StreamingCallback,
+  TextPart,
+  firebaseAuth,
+  vertexAI,
+} from "genkit";
 
 import * as z from "zod";
 
